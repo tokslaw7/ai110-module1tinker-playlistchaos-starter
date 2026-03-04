@@ -250,9 +250,18 @@ def add_song_sidebar():
         }
         if title and artist:
             normalized = normalize_song(song)
-            all_songs = st.session_state.songs[:]
-            all_songs.append(normalized)
-            st.session_state.songs = all_songs
+            duplicate = any(
+                s.get("title", "").strip().lower() == normalized["title"].strip().lower()
+                and s.get("artist", "").strip().lower() == normalized["artist"].strip().lower()
+                for s in st.session_state.songs
+            )
+            if duplicate:
+                st.sidebar.warning(f'"{title}" by {artist} is already in the playlist.')
+            else:
+                all_songs = st.session_state.songs[:]
+                all_songs.append(normalized)
+                st.session_state.songs = all_songs
+                st.sidebar.success(f'"{title}" by {artist} added!')
 
 
 def playlist_tabs(playlists):
