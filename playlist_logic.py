@@ -192,9 +192,10 @@ def lucky_pick(
 def random_choice_or_none(songs: List[Song]) -> Optional[Song]:
     """Return a random song or None."""
     import random
-
-    return random.choice(songs)
-
+    if songs:
+        return random.choice(songs)
+    else:
+        return None
 
 def history_summary(history: List[Song]) -> Dict[str, int]:
     """Return a summary of moods seen in the history."""
